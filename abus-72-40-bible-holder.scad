@@ -2,7 +2,7 @@ use <utils.scad>;
 
 // dimensions are in mm
 actual_bible_diameter = 13.80;
-side_clearance = 1.5;
+side_clearance = 0.2;
 bible_cutout_diameter = 2 * find_outer_radius(actual_bible_diameter/2) + side_clearance;
 
 echo(bible_cutout_diameter);
@@ -20,7 +20,7 @@ key_overhang = (key_handle_width - key_blade_width) / 2;
 bottom_standoff = key_overhang + 5;
 block_length = bible_length * 0.9;
 block_width = bible_cutout_diameter * 1.3;
-block_height = bible_cutout_diameter * 0.6 + bottom_standoff;
+block_height = bible_cutout_diameter * 0.8 + bottom_standoff;
 
 module bible_cutout() {
     translate([block_width / 2,
@@ -30,7 +30,7 @@ module bible_cutout() {
 }
 
 epsilon = 0.1;
-text_thickness = 0.5;
+text_thickness = 1;
 
 module bible_holder() {
     difference() {
@@ -42,13 +42,14 @@ module bible_holder() {
 }
 
 module label() {
-    translate([block_width/2, epsilon, -bible_cutout_diameter * 0.6])
+    translate([block_width/2, text_thickness, -bible_cutout_diameter * 0.6])
     rotate([90, 0, 0])
     linear_extrude(text_thickness + epsilon)
     text("72/40", size = 5, halign = "center", valign = "center");
 }
 
-union() {
+rotate([-90, 0, 0])
+difference() {
     bible_holder();
     label();
 }

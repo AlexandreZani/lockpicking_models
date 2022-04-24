@@ -2,7 +2,7 @@ use <utils.scad>;
 
 // dimensions are in mm
 epsilon = 0.1;
-side_clearance = 1;
+side_clearance = 0.2;
 cylinder_diameter = 9.92;
 cylinder_length = 23.96;
 groove = 1.98;
@@ -19,7 +19,7 @@ key_blade_length = 31.8;
 bottom_standoff = key_overhang + 5;
 block_length = cylinder_length;
 block_width = cylinder_cutout_diameter * 1.3;
-block_height = cylinder_cutout_diameter * 0.6 + bottom_standoff; 
+block_height = cylinder_cutout_diameter * 0.8 + bottom_standoff; 
 
 echo(bottom_standoff);
 
@@ -38,16 +38,17 @@ module cylinder_holder() {
     }
 }
 
-text_thickness = 0.5;
+text_thickness = 1;
 
 module label() {
-    translate([block_width/2, epsilon, -cylinder_cutout_diameter * 0.6])
+    translate([block_width/2, text_thickness, -cylinder_cutout_diameter * 0.6])
     rotate([90, 0, 0])
     linear_extrude(text_thickness + epsilon)
-    text("72/40", size = 4, halign = "center", valign = "center");
+    text("72/40", size = 3.5, halign = "center", valign = "center");
 }
 
-union() {
+rotate([-90, 0, 0])
+difference() {
 cylinder_holder();
 label();
 }
